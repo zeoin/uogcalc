@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang = "en">
+	<head>
+		<title>Zeoin - UOG Calculator</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="shortcut icon" href="favicon.ico" />
+		
+		<script>
+			var counter5 = 2;
+			var counter6 = 2;
+			var counter7 = 3;
+			var counter8 = 3;
+
+			function addMore5() //adds a more feilds for input of more marks.
+			{
+			counter5 ++;
+			counter7 ++;
+			var node=document.createElement("input");
+			node.type = "text";
+			node.name = "modcode[]";
+			document.getElementById("level5_" + counter5).innerHTML+= "<label for ='" + node.name + "'>Module Code: </label>";
+			document.getElementById("level5_" + counter5).appendChild(node);
+			
+			node.type = "text";
+			node.name = "catpoints[]";
+			document.getElementById("level5_" + counter5).innerHTML+= "<label for ='" + node.name + "'> CAT Points: </label>";
+			document.getElementById("level5_" + counter5).appendChild(node);
+			
+			node.type = "text";
+			node.name = "mark[]";
+			document.getElementById("level5_" + counter5).innerHTML+= "<label for ='" + node.name + "'> Mark: </label>";
+			document.getElementById("level5_" + counter5).appendChild(node);
+			
+			document.getElementById("level5_" + counter5).innerHTML+= "<br>";
+			
+			document.getElementById("level5_" + counter5).innerHTML+= "<div id = 'level5_" + counter7 + "'></div>";
+			}
+			
+			function addMore6() //adds a more feilds for input of more marks.
+			{
+			counter6++;
+			counter8++;
+			var node=document.createElement("input");
+			node.type = "text";
+			node.name = "modcode[]";
+			document.getElementById("level6_" + counter6).innerHTML+= "<label for ='" + node.name + "'>Module Code: </label>";
+			document.getElementById("level6_" + counter6).appendChild(node);
+			
+			node.type = "text";
+			node.name = "catpoints[]";
+			document.getElementById("level6_" + counter6).innerHTML+= "<label for ='" + node.name + "'> CAT Points: </label>";
+			document.getElementById("level6_" + counter6).appendChild(node);
+			
+			node.type = "text";
+			node.name = "mark[]";
+			document.getElementById("level6_" + counter6).innerHTML+= "<label for ='" + node.name + "'> Mark: </label>";
+			document.getElementById("level6_" + counter6).appendChild(node);
+			
+			
+			document.getElementById("level6_" + counter6).innerHTML+= "<br>";
+			
+			document.getElementById("level6_" + counter6).innerHTML+= "<div id = 'level6_" + counter8 + "'></div>";
+			}
+			
+			function calc(form)
+			{	
+				var module = []; //gets values from form for module code
+				var catpoints = []; //gets values from form for catpoints
+				var mark = []; //gets values from form for marks
+				
+				for (var i=0; i < document.getElementsByName("modcode").length; i++)
+				{
+					module.push (document.getElementsByName("modcode")[i].value);
+				}
+				
+				for (var i=0; i < document.getElementsByName("catpoints").length; i++)
+				{
+					catpoints.push (document.getElementsByName("catpoints")[i].value);
+				}
+				
+				for (var i=0; i < document.getElementsByName("mark").length; i++)
+				{
+					mark.push (document.getElementsByName("mark")[i].value);
+				}
+				
+				for (var i=0; i < catpoints.length; i++)
+				{
+					catpoints[i] = parseInt(catpoints[i]);
+				}
+				
+				for (var i=0; i < mark.length; i++)
+				{
+					mark[i] = parseInt(mark[i]);
+				}
+				
+				console.log (module);
+				console.log (catpoints);
+				console.log (mark);
+				
+				//var module = ["CT6001" , "CT6003" , "CT6004", "CT6007", "CT6008"];
+				//var catpoints = [15, 15, 30, 30, 30];
+				//var mark = [55, 40, 59, 60, 68];
+				
+							
+				var result1 //holds the result for method 1
+				var result2 //holds the result for method 2
+				var result //holds the final result
+				var theclass //hold the class
+				
+			//calculating method 1	
+
+			var catnum = 0;
+				
+			var results2raw= [];
+			
+			for ( var i = 0; i < mark.length; i++ ) {
+			results2raw.push( [ module[i], catpoints[i], mark[i] ] );
+			}
+			
+			var results2ordered = results2raw.sort(function(a,b){return b[2] > a[2]}); //Sorts results numerically and descending		
+			
+			var results290 = new Array(); //stores top 90 CAT point results
+			
+				for (var i = 0; i < results2ordered.length; i++)//sorts only top 90 CAT point results into another array
+				{
+					if ( catnum <= 90 && (results2ordered[i][1] + catnum) <= 90 ){ //makes sure catnum stays under 90
+					results290.push(results2ordered[i]);
+					catnum = catnum + results2ordered[i][1];
+					}
+				}
+				
+			var marks290 = [];
+			
+			for ( var i = 0; i < results290.length; i++ ) {
+			marks290.push( results290[i][2] );
+			}	
+			
+			var sum2 = marks290.reduce(function(a, b) { return a + b }); //adds all results together
+			var avg2 = sum2 / marks290.length; //divides by number of items to find adverage
+			
+			var roundnum2 = Math.round(avg2); //rounds the adverage to produce result 1
+	
+			result1 = roundnum2;
+				
+			//calculating method 2	
+			
+			var module6 = ["BT214" , "BT220" , "CO260", "IT211", "NEC230", "CO250"];
+			var catpoints6 = [15, 30, 15, 15, 30, 15];
+			var mark6 = [73, 47, 58, 62, 63, 60];
+				
+			var results1raw=[] //gathers results
+			
+			for ( var i = 0; i < mark.length; i++ ) {
+			results1raw.push( [ module6[i], catpoints6[i], mark6[i] ] );
+			}
+	
+			var results1ordered = results1raw.sort(function(a,b){return b[2] > a[2]}); //Sorts results numerically and descending		
+			var results190 = new Array(); //stores top 90 CAT point results
+			
+			var catnum6 = 0;
+				
+				for (var i = 0; i < results2ordered.length; i++)//sorts only top 90 CAT point results into another array
+				{
+					if ( catnum6 <= 90 && (results1ordered[i][1] + catnum6) <= 90 ){ //makes sure catnum stays under 90
+					results190.push(results1ordered[i]);
+					catnum6 = catnum6 + results1ordered[i][1];
+					}
+				}
+				
+			var marks190 = [];
+			
+			for ( var i = 0; i < results190.length; i++ ) {
+			marks190.push( results190[i][2] );
+			}
+			
+			var sum1 = marks190.reduce(function(a, b) { return a + b }); //adds all results together
+			var avg1 = sum1 / marks190.length; //divides by number of items to find adverage
+			
+			var result40 = (avg1 / 100) * 40; //finds 40% of level 5 results
+			var result60 = (avg2 / 100) * 60;//finds 60% of level 6 results
+
+			var result100 = result60 + result40;
+			
+			var roundnum1 =  Math.round(result100)
+			
+			result2 = roundnum1; 
+			
+			var bestmethod;
+			
+			var boundrytxt1 = "This is not within 1% of a classification threshold."
+			var boundrytxt2 = "This is not within 1% of a classification threshold."
+				
+			if (result1 < result2) //works out which of the methods produced the higher mark and returns the highest.
+			{
+				result = result2;
+				bestmethod = "Method 2";
+				
+				if (roundnum2 == 49 || roundnum2 == 59 || roundnum2 == 69){
+				boundrytxt1 = "This was within 1% of a classification threshold but this was disregarded as Method 2 produced a higher result";
+				}
+				
+			var results120 = 0; 
+			var results602 = 0;
+			
+			if (roundnum1 == 49 ) //checks if within 1% of boundry of 2.2
+				{
+					for (var i = 0; i < results1ordered.length; i++)//checks level 6 for results over 50
+					{
+						if ( results1ordered[i][2] >= 50 ){ 
+						results120 = results120 + results1ordered[i][1];
+						}
+					}
+					
+					for (var i = 0; i < results1ordered.length; i++)//checks level 6 for results under 40
+					{
+						if ( results1ordered[i][2] < 40 ){ 
+						results602 = results602 + results1ordered[i][1];
+						}
+					}
+					
+					for (var i = 0; i < results2ordered.length; i++)//checks level 5 for results over 50
+					{
+						if ( results2ordered[i][2] >= 50 ){ 
+						results120 = results120 + results2ordered[i][1];
+						}
+					}
+					
+					for (var i = 0; i < results2ordered.length; i++)//checks level 5 for results under 40
+					{
+						if ( results2ordered[i][2] < 40 ){ 
+						results602 = results602 + results2ordered[i][1];
+						}
+					}
+					
+					if (results120 >= 120 && results602 <= 60){
+						theclass = "2.2 (You met the criteria for your classification to be raised to the higher band.)"; 
+						boundrytxt1 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results120 +" CATS at both levels in the higher class, this is above or at the specified amount of 120 CATS</p><p>There are marks for "+ results602 +" CATS at both levels in the mark range of the class below that of the rounded average. This is below or at the specified amount of 60 CATS</p>"
+					} else if (results120 >= 120 && results602 >= 60){
+						theclass = "3rd (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)";  
+						boundrytxt1 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results120 +" CATS at both levels in the higher class, this is above or at the specified amount of 120 CATS</p><p>There are marks for "+ results602 +" CATS at both levels in the mark range of the class below that of the rounded average. This is higher than the specified amount of 60 CATS</p>"
+					} else if (results120 <= 120 && results602 <= 60){
+						theclass = "3rd (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)"; 
+						boundrytxt1 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results120 +" CATS at both levels in the higher class, this is below specified amount of 120 CATS</p><p>There are marks for "+ results602 +" CATS at both levels in the mark range of the class below that of the rounded average. This is below or at the specified amount of 60 CATS</p>"
+					} else if (results120 <= 120 && results602 >= 60){
+						theclass = "3rd (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)"; 
+						boundrytxt1 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results120 +" CATS at both levels in the higher class, this is below specified amount of 120 CATS</p><p>There are marks for "+ results602 +" CATS at both levels in the mark range of the class below that of the rounded average. This is higher than the specified amount of 60 CATS</p>"
+					}
+					
+					
+				} else if (roundnum1 == 59) { //checks if within 1% of boundry of 2.1
+					
+					for (var i = 0; i < results1ordered.length; i++)//checks level 6 for results over 60
+					{
+						if ( results1ordered[i][2] >= 60 ){ 
+						results120 = results120 + results1ordered[i][1];
+						}
+					}
+					
+					for (var i = 0; i < results1ordered.length; i++)//checks level 6 for results under 50
+					{
+						if ( results1ordered[i][2] < 50 ){ 
+						results602 = results602 + results1ordered[i][1];
+						}
+					}
+					
+					for (var i = 0; i < results2ordered.length; i++)//checks level 5 for results over 60
+					{
+						if ( results2ordered[i][2] >= 60 ){ 
+						results120 = results120 + results2ordered[i][1];
+						}
+					}
+					
+					for (var i = 0; i < results2ordered.length; i++)//checks level 5 for results under 50
+					{
+						if ( results2ordered[i][2] < 50 ){ 
+						results602 = results602 + results2ordered[i][1];
+						}
+					}
+					
+					if (results120 >= 120 && results602 <= 60){
+						theclass = "2.1 (You met the criteria for your classification to be raised to the higher band.)"; 
+						boundrytxt1 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results120 +" CATS at both levels in the higher class, this is above or at the specified amount of 120 CATS</p><p>There are marks for "+ results602 +" CATS at both levels in the mark range of the class below that of the rounded average. This is below or at the specified amount of 60 CATS</p>"
+					} else if (results120 >= 120 && results602 >= 60){
+						theclass = "2.2 (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)";   
+						boundrytxt1 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results120 +" CATS at both levels in the higher class, this is above or at the specified amount of 120 CATS</p><p>There are marks for "+ results602 +" CATS at both levels in the mark range of the class below that of the rounded average. This is higher than the specified amount of 60 CATS</p>"
+					} else if (results120 <= 120 && results602 <= 60){
+						theclass = "2.2 (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)"; 
+						boundrytxt1 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results120 +" CATS at both levels in the higher class, this is below specified amount of 120 CATS</p><p>There are marks for "+ results602 +" CATS at both levels in the mark range of the class below that of the rounded average. This is below or at the specified amount of 60 CATS</p>"
+					} else if (results120 <= 120 && results602 >= 60){
+						theclass = "2.2 (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)"; 
+						boundrytxt1 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results120 +" CATS at both levels in the higher class, this is below specified amount of 120 CATS</p><p>There are marks for "+ results602 +" CATS at both levels in the mark range of the class below that of the rounded average. This is higher than the specified amount of 60 CATS</p>"
+					}
+				
+				} else if (roundnum1 == 69){ //checks if within 1% of boundry of 1st
+					for (var i = 0; i < results1ordered.length; i++)//checks level 6 for results over 70
+					{
+						if ( results1ordered[i][2] >= 70 ){ 
+						results120 = results120 + results1ordered[i][1];
+						}
+					}
+					
+					for (var i = 0; i < results1ordered.length; i++)//checks level 6 for results under 60
+					{
+						if ( results1ordered[i][2] < 60 ){ 
+						results602 = results602 + results1ordered[i][1];
+						}
+					}
+					
+					for (var i = 0; i < results2ordered.length; i++)//checks level 5 for results over 70
+					{
+						if ( results2ordered[i][2] >= 70 ){ 
+						results120 = results120 + results2ordered[i][1];
+						}
+					}
+					
+					for (var i = 0; i < results2ordered.length; i++)//checks level 5 for results under 60
+					{
+						if ( results2ordered[i][2] < 60 ){ 
+						results602 = results602 + results2ordered[i][1];
+						}
+					}
+					
+					if (results120 >= 120 && results602 <= 60){
+						theclass = "1st (You met the criteria for your classification to be raised to the higher band.)"; 
+						boundrytxt1 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results120 +" CATS at both levels in the higher class, this is above or at the specified amount of 120 CATS</p><p>There are marks for "+ results602 +" CATS at both levels in the mark range of the class below that of the rounded average. This is below or at the specified amount of 60 CATS</p>"
+					} else if (results120 >= 120 && results602 >= 60){
+						theclass = "2.1 (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)";  
+						boundrytxt1 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results120 +" CATS at both levels in the higher class, this is above or at the specified amount of 120 CATS</p><p>There are marks for "+ results602 +" CATS at both levels in the mark range of the class below that of the rounded average. This is higher than the specified amount of 60 CATS</p>"
+					} else if (results120 <= 120 && results602 <= 60){
+						theclass = "2.1 (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)";  
+						boundrytxt1 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results120 +" CATS at both levels in the higher class, this is below specified amount of 120 CATS</p><p>There are marks for "+ results602 +" CATS at both levels in the mark range of the class below that of the rounded average. This is below or at the specified amount of 60 CATS</p>"
+					} else if (results120 <= 120 && results602 >= 60){
+						theclass = "2.1 (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)";  
+						boundrytxt1 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results120 +" CATS at both levels in the higher class, this is below specified amount of 120 CATS</p><p>There are marks for "+ results602 +" CATS at both levels in the mark range of the class below that of the rounded average. This is higher than the specified amount of 60 CATS</p>"
+					}
+					
+					
+					
+				}
+				
+			}	else 
+			
+			{
+				result = result1;
+				bestmethod = "Method 1";
+				
+				if (roundnum1 == 49 || roundnum1 == 59 || roundnum1 == 69){
+				boundrytxt2 = "This was within 1% of a classification threshold but this was disregarded as Method 1 produced a higher result";
+				}
+				
+				var results60 = 0; 
+				var results50 = 0;
+				
+				if (roundnum2 == 49 ) //checks if within 1% of boundry of 2.2
+				{
+					for (var i = 0; i < results2ordered.length; i++)//checks for results over 50
+					{
+						if ( results2ordered[i][2] >= 50 ){ 
+						results60 = results60 + results2ordered[i][1];
+						}
+					}
+					
+					for (var i = 0; i < results2ordered.length; i++)//checks for results under 40
+					{
+						if ( results2ordered[i][2] < 40 ){ 
+						results50 = results50 + results2ordered[i][1];
+						}
+					}
+					
+					if (results60 >= 60 && results50 <= 30){
+						theclass = "2.2 (You met the criteria for your classification to be raised to the higher band.)"; 
+						boundrytxt2 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results60 +" CATS at Level 6 in the higher class, this is above or at the specified amount of 60 CATS</p><p>There are marks for "+ results50 +" CATS at level 6 in the mark range of the class below that of the rounded average. This is below or at the specified amount of 30 CATS</p>"
+					} else if (results60 >= 60 && results50 >= 30){
+						theclass = "3rd (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)";  
+						boundrytxt2 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results60 +" CATS at Level 6 in the higher class, this is above or at the specified amount of 60 CATS</p><p>There are marks for "+ results50 +" CATS at level 6 in the mark range of the class below that of the rounded average. This is higher than the specified amount of 30 CATS</p>"
+					} else if (results60 <= 60 && results50 <= 30){
+						theclass = "3rd (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)"; 
+						boundrytxt2 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results60 +" CATS at Level 6 in the higher class, this is below specified amount of 60 CATS</p><p>There are marks for "+ results50 +" CATS at level 6 in the mark range of the class below that of the rounded average. This is below or at the specified amount of 30 CATS</p>"
+					} else if (results60 <= 60 && results50 >= 30){
+						theclass = "3rd (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)"; 
+						boundrytxt2 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results60 +" CATS at Level 6 in the higher class, this is below specified amount of 60 CATS</p><p>There are marks for "+ results50 +" CATS at level 6 in the mark range of the class below that of the rounded average. This is higher than the specified amount of 30 CATS</p>"
+					}
+					
+					
+				} else if (roundnum2 == 59) { //checks if within 1% of boundry of 2.1
+					
+					for (var i = 0; i < results2ordered.length; i++)//checks for results over 60
+					{
+						if ( results2ordered[i][2] >= 60 ){ 
+						results60 = results60 + results2ordered[i][1];
+						}
+					}
+					
+					for (var i = 0; i < results2ordered.length; i++)//checks for results under 50
+					{
+						if ( results2ordered[i][2] < 50 ){ 
+						results50 = results50 + results2ordered[i][1];
+						}
+					}
+					
+					if (results60 >= 60 && results50 <= 30){
+						theclass = "2.1 (You met the criteria for your classification to be raised to the higher band.)"; 
+						boundrytxt2 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results60 +" CATS at Level 6 in the higher class, this is above or at the specified amount of 60 CATS</p><p>There are marks for "+ results50 +" CATS at level 6 in the mark range of the class below that of the rounded average. This is below or at the specified amount of 30 CATS</p>"
+					} else if (results60 >= 60 && results50 >= 30){
+						theclass = "2.2 (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)"; 
+						boundrytxt2 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results60 +" CATS at Level 6 in the higher class, this is above or at the specified amount of 60 CATS</p><p>There are marks for "+ results50 +" CATS at level 6 in the mark range of the class below that of the rounded average. This is higher than the specified amount of 30 CATS</p>"
+					} else if (results60 <= 60 && results50 <= 30){
+						theclass = "2.2 (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)"; 
+						boundrytxt2 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results60 +" CATS at Level 6 in the higher class, this is below specified amount of 60 CATS</p><p>There are marks for "+ results50 +" at CATS level 6 in the mark range of the class below that of the rounded average. This is below or at the specified amount of 30 CATS</p>"
+					} else if (results60 <= 60 && results50 >= 30){
+						theclass = "2.2 (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)";
+						boundrytxt2 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results60 +" CATS at Level 6 in the higher class, this is below specified amount of 60 CATS</p><p>There are marks for "+ results50 +" at CATS level 6 in the mark range of the class below that of the rounded average. This is higher than the specified amount of 30 CATS</p>"
+					}
+				
+				} else if (roundnum2 == 69){ //checks if within 1% of boundry of 1st
+					
+					for (var i = 0; i < results2ordered.length; i++)//checks for results over 70
+					{
+						if ( results2ordered[i][2] >= 70 ){ 
+						results60 = results60 + results2ordered[i][1];
+						}
+					}
+					
+					for (var i = 0; i < results2ordered.length; i++)//checks for results under 60
+					{
+						if ( results2ordered[i][2] < 60 ){ 
+						results50 = results50 + results2ordered[i][1];
+						}
+					}
+									
+					if (results60 >= 60 && results50 <= 30){
+						theclass = "1st (You met the criteria for your classification to be raised to the higher band.)"; 
+						boundrytxt2 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results60 +" CATS at Level 6 in the higher class, this is above or at the specified amount of 60 CATS</p><p>There are marks for "+ results50 +" CATS at level 6 in the mark range of the class below that of the rounded average. This is below or at the specified amount of 30 CATS</p>"
+					} else if (results60 >= 60 && results50 >= 30){
+						theclass = "2.1 (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)";
+						boundrytxt2 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results60 +" CATS at Level 6 in the higher class, this is above or at the specified amount of 60 CATS</p><p>There are marks for "+ results50 +" CATS at level 6 in the mark range of the class below that of the rounded average. This is higher than the specified amount of 30 CATS</p>"
+					} else if (results60 <= 60 && results50 <= 30){
+						theclass = "2.1 (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)";
+						boundrytxt2 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results60 +" CATS at Level 6 in the higher class, this is below specified amount of 60 CATS</p><p>There are marks for "+ results50 +" CATS at level 6 in the mark range of the class below that of the rounded average. This is below or at the specified amount of 30 CATS</p>"
+					} else if (results60 <= 60 && results50 >= 30){
+						theclass = "2.1 (While you are within 1% a classification threshold you did not meet the criteria for your classification to be raised to the higher band.)";
+						boundrytxt2 = "<p>This is within 1% of a classification threshold.</p> <p>There are marks for "+ results60 +" CATS at Level 6 in the higher class, this is below specified amount of 60 CATS</p><p>There are marks for "+ results50 +" CATS at level 6 in the mark range of the class below that of the rounded average. This is higher than the specified amount of 30 CATS</p>"
+					}
+					
+				}
+			}
+			
+			if (result < 40 && theclass == null) { //works out the class
+				theclass = "You didnt gain enough marks for any classification. Fail.";
+			} else if (result >= 40 && result < 50 && theclass == null){
+				theclass = "3rd";
+			} else if (result >= 50 && result < 60 && theclass == null){
+				theclass = "2.2";
+			} else if (result >= 60 && result < 70 && theclass == null){
+				theclass = "2.1";
+			} else if (result >= 70 && theclass == null){
+				theclass = "1st";
+			}	
+			
+			//adds results and working to page
+			
+			var modules190 = [];
+			var modules290 = [];
+			
+			for ( var i = 0; i < results190.length; i++ ) {
+			modules190.push( "<li>" + results190[i][0]);
+			modules190.push( " with a mark of: " + results190[i][2] + "</li>");
+			}
+			
+			modules190 = modules190.join("");
+			
+			for ( var i = 0; i < results290.length; i++ ) {
+			modules290.push( "<li>" + results290[i][0]);
+			modules290.push( " with a mark of: " + results290[i][2] + "</li>");
+			}
+	
+			modules290 = modules290.join("");
+			
+			document.getElementById("markresult").innerHTML= "Your Mark is Calculated at: "+ result +"<br> Giving you a Class of: "+ theclass + "";
+			document.getElementById("working").innerHTML= 
+				"<p><u>Method 1</p></u>" +
+				"<p>Your Best Grades accounting to 90 CATS in Level 6 where:</p>" +
+				"<ul><b>" + modules290 + "</b></ul>" +
+				
+				"<p>The Adverage grade of these is:<b> "+ roundnum2 +" </b>(rounded to the nearest whole number)</p>" +
+				
+				"<p>This gives you a mark for Method 1 of:<b> "+ result1 +"</b></p>" +
+				
+				""+ boundrytxt2 +""+
+				
+				"<p><u>Method 2</u></p>" +
+				
+				"<p>Your Best Grades accounting to 90 CATS in Level 5 where:</p>" +
+				"<ul><b>" + modules190 +" </b></ul>" +
+				
+				"<p>The Adverage grade of these is:<b> "+ avg1 +" </b>(not rounded)</p>" +
+				
+				"<p>Your Best Grades accounting to 90 CATS in Level 6 where:</p>" +
+				"<ul><b>" + modules290 + "</b></ul>" +
+				
+				"<p>The Adverage grade of these is:<b> "+ avg2 +" </b>(not rounded)</p>" +
+				
+				"<p>40% of the level 5 Advarge:<b> "+ result40 + " </b>(not rounded)</p>" +
+				"<p>plus</p>" +
+				"<p>60% of the level 6 Adverage:<b> "+ result60 + " </b>(not rounded)</p>" +
+				
+				"<p>This gives you a mark for Method 2 of:<b> "+ result2 +" </b>(rounded to the nearest whole number)</p>" +
+				
+				""+ boundrytxt1 +""+
+				
+				"<u><p>Final Working</u></p>" +
+				
+				"<p>The higher result of the two methods was:<b> "+ bestmethod +"</b></p>" +
+				
+				"<p>Your final Mark is calculated at:<b> "+ result +"</b></p>" +
+				"<p>Giving you a Class of:<b> "+ theclass +"</b></p>";
+		}	
+		</script>
+		
+	</head>
+	
+	<body>
+		
+		<div id="container">
+		
+	<header>
+		<a href = "index.html"><img id = "paddingimage" src = "images/zeoin.png"/></a>
+	</header>
+	
+		<div id = "navextend">		
+			<nav>
+				<div id = "links">
+					<ul>
+						<a href = "index.html"><li>Home</li></a>
+						<a href = "services.html"><li>Services</li></a>
+						<a href = "projects.html"><li>Projects</li></a>
+						<a href = "webdevelopment.html"><li>Web Development</li></a>
+						<a href = "portfolio.html"><li>Portfolio</li></a>
+						<a href = "contact.html"><li id = "lastnav">Contact</li></a>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<div id = "wrapper">
+			
+			<h2>University of Gloucestershire, Undergraduate Degree Calculator</h2>
+			
+			<article class = "border">
+				<h3>Disclaimer</h3>
+				<p class = "red">All information detailed herein is to be taken as a guide basis only and may not reflect any mark awarded by the University of Gloucestershire. Information was freely obtained from the document <a target = "_blank" href = "http://insight.glos.ac.uk/departments/registry/Quality/Documents/Academic%20Regulations%20minor%20amend%20Jan%2014.pdf">"Academic Regulations for Taught Provision - Academic Year 2013/14"</a> published by the Univercity of Gloucestershire. Zeoin does not have any affliliation with the University of Gloucestershire and your mark is ultimatly and entirely awarded at their discression regardless of anything detailed on this website.</p>
+			</article>
+			
+			<article>
+				<h3>Calculator</h3>
+				<p>Its that time of year again and people are coming to the end of their respective degrees, eager to find out what sort of mark they will be looking at getting for all their hard work.</p>
+				<p>Even though you may have recived all your marks, atleast provisonally, you may find yourself waiting a while for your official degree classification as it goes through the Board of Examiners. Information is available on exactly how they calculate this, which I have made into this calculator so you can work it out yourself quickly and easily as it can get quite confusing.</p>
+			</article>
+			
+			
+			<div class = "fullbox">
+			<form name = "calculator" id = "calculators">
+			<h3>Level 5 Marks (Your Second Year of a Conventional Degree)</h3>
+			<label for = "modcode5">Module Code:</label>
+			<input type = "text" name = "modcode5" />
+			<label for = "catpoints5">CAT Points:</label>
+			<input type = "text" name = "catpoints5" />
+			<label for = "mark5">Mark:</label>
+			<input type = "text" name = "mark5" /> <br>
+			
+			<label for = "modcode5">Module Code:</label>
+			<input type = "text" name = "modcode5" />
+			<label for = "catpoints5">CAT Points:</label>
+			<input type = "text" name = "catpoints5" />
+			<label for = "mark5">Mark:</label>
+			<input type = "text" name = "mark5" /> <br>
+			
+			<label for = "modcode5">Module Code:</label>
+			<input type = "text" name = "modcode5" />
+			<label for = "catpoints5">CAT Points:</label>
+			<input type = "text" name = "catpoints5" />
+			<label for = "mark5">Mark:</label>
+			<input type = "text" name = "mark5" /> <br>
+			
+			<label for = "modcode5">Module Code:</label>
+			<input type = "text" name = "modcode5" />
+			<label for = "catpoints5">CAT Points:</label>
+			<input type = "text" name = "catpoints5" />
+			<label for = "mark5">Mark:</label>
+			<input type = "text" name = "mark5" /> <br>
+			
+			<div id = "level5_3"></div>
+			<button type="button" onclick="addMore5();">Add More</button><br>
+			
+			<h3>Level 6 Marks (Your Third / Final Year of a Conventional Degree)</h3>
+			<label for = "modcode">Module Code:</label>
+			<input type = "text" name = "modcode" />
+			<label for = "catpoints">CAT Points:</label>
+			<input type = "text" name = "catpoints" />
+			<label for = "mark">Mark:</label>
+			<input type = "text" name = "mark" /> <br>
+			
+			<label for = "modcode">Module Code:</label>
+			<input type = "text" name = "modcode" />
+			<label for = "catpoints">CAT Points:</label>
+			<input type = "text" name = "catpoints" />
+			<label for = "mark">Mark:</label>
+			<input type = "text" name = "mark" /> <br>
+			
+			<label for = "modcode">Module Code:</label>
+			<input type = "text" name = "modcode" />
+			<label for = "catpoints">CAT Points:</label>
+			<input type = "text" name = "catpoints" />
+			<label for = "mark">Mark:</label>
+			<input type = "text" name = "mark" /> <br>
+			
+			<label for = "modcode">Module Code:</label>
+			<input type = "text" name = "modcode" />
+			<label for = "catpoints">CAT Points:</label>
+			<input type = "text" name = "catpoints" />
+			<label for = "mark">Mark:</label>
+			<input type = "text" name = "mark" /> <br>
+			
+			<div id = "level6_3"></div>
+			<button type = "button" onclick="addMore6();">Add More</button><br>
+			
+			<button type = "button" onclick="calc(this.form)">Generate</button>
+				
+			</form>
+			
+			<h1 id = "markresult">Your Mark is Calculated at: <br> Giving you a Class of: </h1>
+			<p>Don't compleltly trust this result? I don't blame you, I must of calculated mine 6 or 7 times just to be sure. For your peace of mind you can view the working below or you can ofcource work it out youself with the details provided.</p>
+			
+			<h3>Working</h3>
+			
+			<div id = "working">
+				<u>Method 1</u>
+				
+				<p>Your Best Grades accounting to 90 CATS in Level 6 where:</p>
+				<ul>
+					<li></li>
+				</ul>
+				
+				<p>The Adverage grade of these is: (rounded to the nearest whole number)</p>
+				<p>This is not within 1% of a classification threshold.</p>
+				
+				<p>This gives you a mark for Method 1 of:</p>
+				
+				<u>Method 2</u>
+				
+				<p>Your Best Grades accounting to 90 CATS in Level 5 where:</p>
+				<ul>
+					<li></li>
+				</ul>
+				
+				<p>The Adverage grade of these is: (not rounded)</p>
+				
+				<p>Your Best Grades accounting to 90 CATS in Level 6 where:</p>
+				<ul>
+					<li></li>
+				</ul>
+				
+				<p>The Adverage grade of these is: (not rounded)</p>
+				
+				<p>40% of the level 5 Advarge:</p>
+				<p>plus</p>
+				<p>60% of the level 6 Adverage:</p>
+				
+				<p>This gives you a mark for Method 2 of: (rounded to the nearest whole number)</p>
+				
+				<u>Final Working</u>
+				
+				<p>The higher result of the two methods was:</p>
+				
+				<p>Your final Mark is calculated at:</p>
+				<p>Giving you a Class of Honours of:</p>
+				
+				
+			
+			</div>
+			
+			<h3>Absrtract from <a target = "_blank" href = "http://insight.glos.ac.uk/departments/registry/Quality/Documents/Academic%20Regulations%20minor%20amend%20Jan%2014.pdf">"Academic Regulations for Taught Provision - Academic Year 2013/14"</a></h3>
+			<p>In calculating the classification band in which a student falls, the Board of Examiners 
+			will use two methods. The method giving the higher result will be used to determine 
+			the classification.</p>
+
+			<u>Method 1 </u>
+			 
+			<p>This is based on the average of the best grades at the level of the award amounting to 
+			90 CATS, rounded to the nearest whole number. If the rounded average is within 1% 
+			of a classification threshold (50, 60 or 70%), the student will be upgraded to the higher 
+			class if both of the following criteria are met:</p>
+			 
+			<p>a. there are marks for at least 60 CATS (e.g., 4 single modules) at Level 6 in the higher 
+			class;</p>
+			 
+			<p>b. there are marks for no more than 30 CATS (e.g., 2 single modules) at Level 6 in the 
+			mark range of the class below that of the rounded average.</p>
+			 
+			<p>In the case of a student with ungraded credit at Level 6, method 1 may be used 
+			provided there are grades for modules worth 75 CATS points.</p>
+			 
+			<u>Method 2</u> 
+			 
+			<p>This is based on the average (not rounded) of the best grades at the level one below 
+			that of the award amounting to 90 CATS, weighted at 40%, plus the average (not 
+			rounded) of the best grades at the level of the award amounting to 90 CATS, weighted 
+			at 60%, rounded to the nearest whole number. If the rounded average is within 1% of 
+			a classification threshold (50, 60 or 70%), the student will be upgraded to the higher 
+			class if both of the following criteria are met:</p>
+			 
+			<p>a. there are marks for at least 120 CATS at both levels in the higher class;</p>
+			 
+			<p>b. there are marks for no more than 60 CATS at both levels in the mark range of the 
+			class below that of the rounded average.</p>
+			 
+			<p>In the case of a student with ungraded credit at the level one below that of the award, 
+			method 2 may be used provided there are grades for modules worth 60 CATS points.</p>
+			
+			</div>
+		
+		</div> <!--end of wrapper-->
+		
+				
+		<footer>
+			<div id = "footer">
+				<ul>
+					<li>&copy; Zoin 2014</li> 
+					<li><a href = "MAILTO:dreynolds@zeoin.co.uk">Dreynolds@zeoin.co.uk</a></li>
+					<li><a href = "sitemap.html">Site Map</a></li>
+					<li><a href = "login.php">Client Area</a></li>
+				</ul>
+			</div>
+		</footer>
+		
+		</div> <!--end of container-->
+		
+	</body>
+</html>
+
