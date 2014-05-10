@@ -15,21 +15,29 @@
 			{
 			counter5 ++;
 			counter7 ++;
+			
 			var node=document.createElement("input");
+			var node2=document.createElement("input");
+			var node3=document.createElement("input");
+			
 			node.type = "text";
-			node.name = "modcode[]";
+			node.name = "modcode5";
 			document.getElementById("level5_" + counter5).innerHTML+= "<label for ='" + node.name + "'>Module Code: </label>";
 			document.getElementById("level5_" + counter5).appendChild(node);
 			
-			node.type = "text";
-			node.name = "catpoints[]";
-			document.getElementById("level5_" + counter5).innerHTML+= "<label for ='" + node.name + "'> CAT Points: </label>";
-			document.getElementById("level5_" + counter5).appendChild(node);
+			node2.type = "number";
+			node2.name = "catpoints5";
+			node2.min="0";
+			node2.max="100";
+			document.getElementById("level5_" + counter5).innerHTML+= "<label for ='" + node2.name + "'> CAT Points: </label>";
+			document.getElementById("level5_" + counter5).appendChild(node2);
 			
-			node.type = "text";
-			node.name = "mark[]";
-			document.getElementById("level5_" + counter5).innerHTML+= "<label for ='" + node.name + "'> Mark: </label>";
-			document.getElementById("level5_" + counter5).appendChild(node);
+			node3.type = "number";
+			node3.name = "mark5";
+			node3.min="0";
+			node3.max="100";
+			document.getElementById("level5_" + counter5).innerHTML+= "<label for ='" + node3.name + "'> Mark: </label>";
+			document.getElementById("level5_" + counter5).appendChild(node3);
 			
 			document.getElementById("level5_" + counter5).innerHTML+= "<br>";
 			
@@ -41,21 +49,26 @@
 			counter6++;
 			counter8++;
 			var node=document.createElement("input");
+			var node2=document.createElement("input");
+			var node3=document.createElement("input");
 			node.type = "text";
-			node.name = "modcode[]";
+			node.name = "modcode6";
 			document.getElementById("level6_" + counter6).innerHTML+= "<label for ='" + node.name + "'>Module Code: </label>";
 			document.getElementById("level6_" + counter6).appendChild(node);
 			
-			node.type = "text";
-			node.name = "catpoints[]";
-			document.getElementById("level6_" + counter6).innerHTML+= "<label for ='" + node.name + "'> CAT Points: </label>";
-			document.getElementById("level6_" + counter6).appendChild(node);
+			node2.type = "number";
+			node2.name = "catpoints6";
+			node2.min="0";
+			node2.max="100";
+			document.getElementById("level6_" + counter6).innerHTML+= "<label for ='" + node2.name + "'> CAT Points: </label>";
+			document.getElementById("level6_" + counter6).appendChild(node2);
 			
-			node.type = "text";
-			node.name = "mark[]";
-			document.getElementById("level6_" + counter6).innerHTML+= "<label for ='" + node.name + "'> Mark: </label>";
-			document.getElementById("level6_" + counter6).appendChild(node);
-			
+			node3.type = "number";
+			node3.name = "mark6";
+			node3.min="0";
+			node3.max="100";
+			document.getElementById("level6_" + counter6).innerHTML+= "<label for ='" + node3.name + "'> Mark: </label>";
+			document.getElementById("level6_" + counter6).appendChild(node3);
 			
 			document.getElementById("level6_" + counter6).innerHTML+= "<br>";
 			
@@ -64,33 +77,48 @@
 			
 			function calc(form)
 			{	
-				var module = []; //gets values from form for module code
-				var catpoints = []; //gets values from form for catpoints
-				var mark = []; //gets values from form for marks
+				var module = []; //Array stores modules gatherd from form
+				var catpoints = []; //Array stores catpoints gatherd from form
+				var mark = []; //Array stores marks gatherd from form
+				var errors = [];
 				
-				for (var i=0; i < document.getElementsByName("modcode").length; i++)
+				for (var i=0; i < document.getElementsByName("modcode6").length; i++) //gets values from form for module code
 				{
-					module.push (document.getElementsByName("modcode")[i].value);
+					var x = document.getElementsByName("modcode6")[i].value;
+					var num = i + 1;
+					if (x == null || x == "") // Not required for user to enter so adds identifier for working
+					{
+						module.push ('Module ' + num);
+					} else
+					{
+						module.push (x);
+					}	
 				}
 				
-				for (var i=0; i < document.getElementsByName("catpoints").length; i++)
+				for (var i=0; i < document.getElementsByName("catpoints6").length; i++) //gets values from form for catpoints
 				{
-					catpoints.push (document.getElementsByName("catpoints")[i].value);
+					var x = parseInt(document.getElementsByName("catpoints6")[i].value);
+					var y = parseInt(document.getElementsByName("mark6")[i].value);
+					
+					if (x <= 0) { x = NaN; } // check that number isnt 0 or below
+					
+					if (isNaN(x) && !isNaN(y)) { document.getElementsByName("catpoints6")[i].className = "backgroundError"; errors.push ("You have added Marks for a module with no CAT Points."); } else { document.getElementsByName("catpoints6")[i].className = "";} // check if one item is filled out and the other isn't
+					
+					catpoints.push (x);
+
 				}
 				
-				for (var i=0; i < document.getElementsByName("mark").length; i++)
+				for (var i=0; i < document.getElementsByName("mark6").length; i++) //gets values from form for marks
 				{
-					mark.push (document.getElementsByName("mark")[i].value);
-				}
-				
-				for (var i=0; i < catpoints.length; i++)
-				{
-					catpoints[i] = parseInt(catpoints[i]);
-				}
-				
-				for (var i=0; i < mark.length; i++)
-				{
-					mark[i] = parseInt(mark[i]);
+					var x = parseInt(document.getElementsByName("mark6")[i].value);
+					var y = parseInt(document.getElementsByName("catpoints6")[i].value);
+					
+					if (x <= 0) { x = NaN; }  // check that number isnt 0 or below
+					
+					if (isNaN(x) && !isNaN(y)) { document.getElementsByName("mark6")[i].className = "backgroundError"; errors.push ("You have added CATS Points to a module with no Mark."); } else { document.getElementsByName("mark6")[i].className = "";} // check if one item is filled out and the other isn't
+					
+					mark.push (x);
+
 				}
 				
 				console.log (module);
@@ -106,8 +134,16 @@
 				var result2 //holds the result for method 2
 				var result //holds the final result
 				var theclass //hold the class
+				var theclass1 //hold the class for method 1
+				var theclass2 //hold the class for method 2
+				
+			for ( var i = 0; i < errors.length; i++ ) { // lists any errors caught during validation.
+			document.getElementById("errors").innerHTML += errors[i] + "<br>";
+			}
 				
 			//calculating method 1	
+			
+			console.log (errors);
 
 			var catnum = 0;
 				
@@ -123,7 +159,7 @@
 			
 				for (var i = 0; i < results2ordered.length; i++)//sorts only top 90 CAT point results into another array
 				{
-					if ( catnum <= 90 && (results2ordered[i][1] + catnum) <= 90 ){ //makes sure catnum stays under 90
+					if ( catnum <= 90 && (results2ordered[i][1] + catnum) <= 90 && results2ordered[i][2] >= 40){ //makes sure catnum stays under 90 and module has achived a pass grade
 					results290.push(results2ordered[i]);
 					catnum = catnum + results2ordered[i][1];
 					}
@@ -141,17 +177,56 @@
 			var roundnum2 = Math.round(avg2); //rounds the adverage to produce result 1
 	
 			result1 = roundnum2;
+			
+			if (catnum <= 75) {result1 = 0;}
 				
 			//calculating method 2	
 			
-			var module6 = ["BT214" , "BT220" , "CO260", "IT211", "NEC230", "CO250"];
-			var catpoints6 = [15, 30, 15, 15, 30, 15];
-			var mark6 = [73, 47, 58, 62, 63, 60];
+				var module5 = []; //Array stores modules gatherd from form
+				var catpoints5 = []; //Array stores catpoints gatherd from form
+				var mark5 = []; //Array stores marks gatherd from form
+				
+				for (var i=0; i < document.getElementsByName("modcode5").length; i++) //gets values from form for module code
+				{
+					var x = document.getElementsByName("modcode5")[i].value;
+					var num = i + 1;
+					if (x == null || x == "") // Not required for user to enter so adds identifier for working
+					{
+						module5.push ('Module ' + num);
+					} else
+					{
+						module5.push (x);
+					}	
+				}
+				
+				for (var i=0; i < document.getElementsByName("catpoints5").length; i++) //gets values from form for catpoints
+				{
+					catpoints5.push (document.getElementsByName("catpoints5")[i].value);
+				}
+				
+				for (var i=0; i < document.getElementsByName("mark5").length; i++) //gets values from form for marks
+				{
+					mark5.push (document.getElementsByName("mark5")[i].value);
+				}
+				
+				for (var i=0; i < catpoints5.length; i++)
+				{
+					catpoints5[i] = parseInt(catpoints[i]);
+				}
+				
+				for (var i=0; i < mark5.length; i++)
+				{
+					mark5[i] = parseInt(mark5[i]);
+				}
+			
+			//var module5 = ["BT214" , "BT220" , "CO260", "IT211", "NEC230", "CO250"];
+			//var catpoints5 = [15, 30, 15, 15, 30, 15];
+			//var mark5 = [73, 47, 58, 62, 63, 60];
 				
 			var results1raw=[] //gathers results
 			
 			for ( var i = 0; i < mark.length; i++ ) {
-			results1raw.push( [ module6[i], catpoints6[i], mark6[i] ] );
+			results1raw.push( [ module5[i], catpoints5[i], mark5[i] ] );
 			}
 	
 			var results1ordered = results1raw.sort(function(a,b){return b[2] > a[2]}); //Sorts results numerically and descending		
@@ -161,7 +236,7 @@
 				
 				for (var i = 0; i < results2ordered.length; i++)//sorts only top 90 CAT point results into another array
 				{
-					if ( catnum6 <= 90 && (results1ordered[i][1] + catnum6) <= 90 ){ //makes sure catnum stays under 90
+					if ( catnum6 <= 90 && (results1ordered[i][1] + catnum6) <= 90 && results1ordered[i][2] >= 40){ //makes sure catnum stays under 90 and module has achived a pass grade
 					results190.push(results1ordered[i]);
 					catnum6 = catnum6 + results1ordered[i][1];
 					}
@@ -185,12 +260,14 @@
 			
 			result2 = roundnum1; 
 			
+			if (catnum6 <= 60) {result2 = 0;}
+			
 			var bestmethod;
 			
 			var boundrytxt1 = "This is not within 1% of a classification threshold."
 			var boundrytxt2 = "This is not within 1% of a classification threshold."
 				
-			if (result1 < result2) //works out which of the methods produced the higher mark and returns the highest.
+			if (result1 < result2) //works out which of the methods produced the higher mark and returns the highest. also checks method 2 is used.
 			{
 				result = result2;
 				bestmethod = "Method 2";
@@ -338,7 +415,7 @@
 					
 				}
 				
-			}	else 
+			}	else
 			
 			{
 				result = result1;
@@ -455,7 +532,7 @@
 				theclass = "2.1";
 			} else if (result >= 70 && theclass == null){
 				theclass = "1st";
-			}	
+			}
 			
 			//adds results and working to page
 			
@@ -476,10 +553,14 @@
 	
 			modules290 = modules290.join("");
 			
-			document.getElementById("markresult").innerHTML= "Your Mark is Calculated at: "+ result +"<br> Giving you a Class of: "+ theclass + "";
-			document.getElementById("working").innerHTML= 
+			console.log(catnum6);
+			console.log(catnum);
+			
+			if (errors.length == 0 && catnum6 >= 60 && catnum >= 75) {
+				document.getElementById("markresult").innerHTML= "Your Mark is Calculated at: "+ result +"<br> Giving you a Class of: "+ theclass + "";
+				document.getElementById("working").innerHTML= 
 				"<p><u>Method 1</p></u>" +
-				"<p>Your Best Grades accounting to 90 CATS in Level 6 where:</p>" +
+				"<p>Your Best Grades accounting to 90 CATS with pass grade in Level 6 where:</p>" +
 				"<ul><b>" + modules290 + "</b></ul>" +
 				
 				"<p>The Adverage grade of these is:<b> "+ roundnum2 +" </b>(rounded to the nearest whole number)</p>" +
@@ -490,12 +571,12 @@
 				
 				"<p><u>Method 2</u></p>" +
 				
-				"<p>Your Best Grades accounting to 90 CATS in Level 5 where:</p>" +
+				"<p>Your Best Grades accounting to 90 CATS with pass grade in Level 5 where:</p>" +
 				"<ul><b>" + modules190 +" </b></ul>" +
 				
 				"<p>The Adverage grade of these is:<b> "+ avg1 +" </b>(not rounded)</p>" +
 				
-				"<p>Your Best Grades accounting to 90 CATS in Level 6 where:</p>" +
+				"<p>Your Best Grades accounting to 90 CATS with pass grade in Level 6 where:</p>" +
 				"<ul><b>" + modules290 + "</b></ul>" +
 				
 				"<p>The Adverage grade of these is:<b> "+ avg2 +" </b>(not rounded)</p>" +
@@ -514,6 +595,69 @@
 				
 				"<p>Your final Mark is calculated at:<b> "+ result +"</b></p>" +
 				"<p>Giving you a Class of:<b> "+ theclass +"</b></p>";
+			
+			}	else if (errors.length == 0 && catnum6 <= 60 && catnum >= 75) {
+				
+				document.getElementById("markresult").innerHTML= "Your Mark is Calculated at: "+ result +"<br> Giving you a Class of: "+ theclass + "";
+				document.getElementById("working").innerHTML= 
+				"<p><u>Method 1</p></u>" +
+				"<p>Your Best Grades accounting to 90 CATS with pass grade in Level 6 where:</p>" +
+				"<ul><b>" + modules290 + "</b></ul>" +
+				
+				"<p>The Adverage grade of these is:<b> "+ roundnum2 +" </b>(rounded to the nearest whole number)</p>" +
+				
+				"<p>This gives you a mark for Method 1 of:<b> "+ result1 +"</b></p>" +
+				
+				""+ boundrytxt2 +""+
+				
+				"<p><u>Method 2</u></p>" +
+				
+				"<p>You did not gain enough cat points in level 5 (More than 60) possibley due to ungraded credit, therefore Method 2 could not be used.</p>" +
+				
+				"<u><p>Final Working</u></p>" +
+				
+				"<p>Your final Mark is calculated at:<b> "+ result +"</b></p>" +
+				"<p>Giving you a Class of:<b> "+ theclass +"</b></p>";
+			
+			}	else if (errors.length == 0 && catnum6 >= 60 && catnum <= 75) {
+				
+				document.getElementById("markresult").innerHTML= "Your Mark is Calculated at: "+ result +"<br> Giving you a Class of: "+ theclass + "";
+				document.getElementById("working").innerHTML= 
+				"<p><u>Method 1</p></u>" +
+				
+				"<p>You did not gain enough cat points in level 6 (More than 75) possibley due to ungraded credit, therefore Method 1 could not be used.</p>" +
+				
+				"<p><u>Method 2</u></p>" +
+				
+				"<p>Your Best Grades accounting to 90 CATS with pass grade in Level 5 where:</p>" +
+				"<ul><b>" + modules190 +" </b></ul>" +
+				
+				"<p>The Adverage grade of these is:<b> "+ avg1 +" </b>(not rounded)</p>" +
+				
+				"<p>Your Best Grades accounting to 90 CATS with pass grade in Level 6 where:</p>" +
+				"<ul><b>" + modules290 + "</b></ul>" +
+				
+				"<p>The Adverage grade of these is:<b> "+ avg2 +" </b>(not rounded)</p>" +
+				
+				"<p>40% of the level 5 Advarge:<b> "+ result40 + " </b>(not rounded)</p>" +
+				"<p>plus</p>" +
+				"<p>60% of the level 6 Adverage:<b> "+ result60 + " </b>(not rounded)</p>" +
+				
+				"<p>This gives you a mark for Method 2 of:<b> "+ result2 +" </b>(rounded to the nearest whole number)</p>" +
+				
+				""+ boundrytxt1 +""+
+				
+				"<u><p>Final Working</u></p>" +
+				
+				"<p>The higher result of the two methods was:<b> "+ bestmethod +"</b></p>" +
+				
+				"<p>Your final Mark is calculated at:<b> "+ result +"</b></p>" +
+				"<p>Giving you a Class of:<b> "+ theclass +"</b></p>";
+			
+			} else if (catnum6 <= 60 && catnum <= 75) {
+				document.getElementById("errors").innerHTML+= "There are not enough CAT Points for either method to calculate a result. (Marks below 40 do not count towards your CAT Points) <br>";
+			}
+			
 		}	
 		</script>
 		
@@ -545,14 +689,8 @@
 			
 			<h2>University of Gloucestershire, Undergraduate Degree Calculator</h2>
 			
-			<article class = "border">
-				<h3>Disclaimer</h3>
-				<p class = "red">All information detailed herein is to be taken as a guide basis only and may not reflect any mark awarded by the University of Gloucestershire. Information was freely obtained from the document <a target = "_blank" href = "http://insight.glos.ac.uk/departments/registry/Quality/Documents/Academic%20Regulations%20minor%20amend%20Jan%2014.pdf">"Academic Regulations for Taught Provision - Academic Year 2013/14"</a> published by the Univercity of Gloucestershire. Zeoin does not have any affliliation with the University of Gloucestershire and your mark is ultimatly and entirely awarded at their discression regardless of anything detailed on this website.</p>
-			</article>
-			
 			<article>
 				<h3>Calculator</h3>
-				<p>Its that time of year again and people are coming to the end of their respective degrees, eager to find out what sort of mark they will be looking at getting for all their hard work.</p>
 				<p>Even though you may have recived all your marks, atleast provisonally, you may find yourself waiting a while for your official degree classification as it goes through the Board of Examiners. Information is available on exactly how they calculate this, which I have made into this calculator so you can work it out yourself quickly and easily as it can get quite confusing.</p>
 			</article>
 			
@@ -563,62 +701,62 @@
 			<label for = "modcode5">Module Code:</label>
 			<input type = "text" name = "modcode5" />
 			<label for = "catpoints5">CAT Points:</label>
-			<input type = "text" name = "catpoints5" />
+			<input type = "number" min="0" max="100" name = "catpoints5" />
 			<label for = "mark5">Mark:</label>
-			<input type = "text" name = "mark5" /> <br>
+			<input type = "number" min="0" max="100" name = "mark5" /> <br>
 			
 			<label for = "modcode5">Module Code:</label>
 			<input type = "text" name = "modcode5" />
 			<label for = "catpoints5">CAT Points:</label>
-			<input type = "text" name = "catpoints5" />
+			<input type = "number" min="0" max="100" name = "catpoints5" />
 			<label for = "mark5">Mark:</label>
-			<input type = "text" name = "mark5" /> <br>
+			<input type = "number" min="0" max="100" name = "mark5" /> <br>
 			
 			<label for = "modcode5">Module Code:</label>
 			<input type = "text" name = "modcode5" />
 			<label for = "catpoints5">CAT Points:</label>
-			<input type = "text" name = "catpoints5" />
+			<input type = "number" min="0" max="100" name = "catpoints5" />
 			<label for = "mark5">Mark:</label>
-			<input type = "text" name = "mark5" /> <br>
+			<input type = "number" min="0" max="100" name = "mark5" /> <br>
 			
 			<label for = "modcode5">Module Code:</label>
 			<input type = "text" name = "modcode5" />
 			<label for = "catpoints5">CAT Points:</label>
-			<input type = "text" name = "catpoints5" />
+			<input type = "number" min="0" max="100" name = "catpoints5" />
 			<label for = "mark5">Mark:</label>
-			<input type = "text" name = "mark5" /> <br>
+			<input type = "number" min="0" max="100" name = "mark5" /> <br>
 			
 			<div id = "level5_3"></div>
 			<button type="button" onclick="addMore5();">Add More</button><br>
 			
 			<h3>Level 6 Marks (Your Third / Final Year of a Conventional Degree)</h3>
-			<label for = "modcode">Module Code:</label>
-			<input type = "text" name = "modcode" />
-			<label for = "catpoints">CAT Points:</label>
-			<input type = "text" name = "catpoints" />
-			<label for = "mark">Mark:</label>
-			<input type = "text" name = "mark" /> <br>
+			<label for = "modcode6">Module Code:</label>
+			<input type = "text" name = "modcode6" />
+			<label for = "catpoints6">CAT Points:</label>
+			<input type = "number" min="0" max="100" name = "catpoints6" />
+			<label for = "mark6">Mark:</label>
+			<input type = "number" min="0" max="100" name = "mark6" /> <br>
 			
-			<label for = "modcode">Module Code:</label>
-			<input type = "text" name = "modcode" />
-			<label for = "catpoints">CAT Points:</label>
-			<input type = "text" name = "catpoints" />
-			<label for = "mark">Mark:</label>
-			<input type = "text" name = "mark" /> <br>
+			<label for = "modcode6">Module Code:</label>
+			<input type = "text" name = "modcode6" />
+			<label for = "catpoints6">CAT Points:</label>
+			<input type = "number" min="0" max="100" name = "catpoints6" />
+			<label for = "mark6">Mark:</label>
+			<input type = "number" min="0" max="100" name = "mark6" /> <br>
 			
-			<label for = "modcode">Module Code:</label>
-			<input type = "text" name = "modcode" />
-			<label for = "catpoints">CAT Points:</label>
-			<input type = "text" name = "catpoints" />
-			<label for = "mark">Mark:</label>
-			<input type = "text" name = "mark" /> <br>
+			<label for = "modcode6">Module Code:</label>
+			<input type = "text" name = "modcode6" />
+			<label for = "catpoints6">CAT Points:</label>
+			<input type = "number" min="0" max="100" name = "catpoints6" />
+			<label for = "mark6">Mark:</label>
+			<input type = "number" min="0" max="100" name = "mark6" /> <br>
 			
-			<label for = "modcode">Module Code:</label>
-			<input type = "text" name = "modcode" />
-			<label for = "catpoints">CAT Points:</label>
-			<input type = "text" name = "catpoints" />
-			<label for = "mark">Mark:</label>
-			<input type = "text" name = "mark" /> <br>
+			<label for = "modcode6">Module Code:</label>
+			<input type = "text" name = "modcode6" />
+			<label for = "catpoints6">CAT Points:</label>
+			<input type = "number" min="0" max="100" name = "catpoints6" />
+			<label for = "mark6">Mark:</label>
+			<input type = "number" min="0" max="100" name = "mark6" /> <br>
 			
 			<div id = "level6_3"></div>
 			<button type = "button" onclick="addMore6();">Add More</button><br>
@@ -627,55 +765,24 @@
 				
 			</form>
 			
+			<p id = "errors"></p>
+			
 			<h1 id = "markresult">Your Mark is Calculated at: <br> Giving you a Class of: </h1>
 			<p>Don't compleltly trust this result? I don't blame you, I must of calculated mine 6 or 7 times just to be sure. For your peace of mind you can view the working below or you can ofcource work it out youself with the details provided.</p>
 			
 			<h3>Working</h3>
 			
 			<div id = "working">
-				<u>Method 1</u>
 				
-				<p>Your Best Grades accounting to 90 CATS in Level 6 where:</p>
-				<ul>
-					<li></li>
-				</ul>
-				
-				<p>The Adverage grade of these is: (rounded to the nearest whole number)</p>
-				<p>This is not within 1% of a classification threshold.</p>
-				
-				<p>This gives you a mark for Method 1 of:</p>
-				
-				<u>Method 2</u>
-				
-				<p>Your Best Grades accounting to 90 CATS in Level 5 where:</p>
-				<ul>
-					<li></li>
-				</ul>
-				
-				<p>The Adverage grade of these is: (not rounded)</p>
-				
-				<p>Your Best Grades accounting to 90 CATS in Level 6 where:</p>
-				<ul>
-					<li></li>
-				</ul>
-				
-				<p>The Adverage grade of these is: (not rounded)</p>
-				
-				<p>40% of the level 5 Advarge:</p>
-				<p>plus</p>
-				<p>60% of the level 6 Adverage:</p>
-				
-				<p>This gives you a mark for Method 2 of: (rounded to the nearest whole number)</p>
-				
-				<u>Final Working</u>
-				
-				<p>The higher result of the two methods was:</p>
-				
-				<p>Your final Mark is calculated at:</p>
-				<p>Giving you a Class of Honours of:</p>
-				
-				
+				<p>After you click Generate, the working will be displayed here.</p>
 			
+			</div>
+			
+			<br>
+			
+			<div class = "border">
+				<h3>Disclaimer</h3>
+				<p class = "red">All information detailed herein is to be taken as a guide basis only and may not reflect any mark awarded by the University of Gloucestershire. Information was freely obtained from the document <a target = "_blank" href = "http://insight.glos.ac.uk/departments/registry/Quality/Documents/Academic%20Regulations%20minor%20amend%20Jan%2014.pdf">"Academic Regulations for Taught Provision - Academic Year 2013/14"</a> published by the Univercity of Gloucestershire. Zeoin does not have any affliliation with the University of Gloucestershire and your mark is ultimatly and entirely awarded at their discression regardless of anything detailed on this website.</p>
 			</div>
 			
 			<h3>Absrtract from <a target = "_blank" href = "http://insight.glos.ac.uk/departments/registry/Quality/Documents/Academic%20Regulations%20minor%20amend%20Jan%2014.pdf">"Academic Regulations for Taught Provision - Academic Year 2013/14"</a></h3>

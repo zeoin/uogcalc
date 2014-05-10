@@ -274,4 +274,7 @@ label{
 	border:1px solid #000000;
 }
 
+.backgroundError{
+	background-color: #FF8080;
+}
 
